@@ -12,9 +12,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { Image, Paintbrush } from "lucide-react"
+import { Image as LucideImage, Paintbrush } from "lucide-react";
 import { useLayerStore } from "@/lib/layer-store"
 import { toast } from "sonner"
+import Image from "next/image"; // Import next/image
 
 export default function BgRemove() {
   const tags = useImageStore((state) => state.tags)
@@ -34,7 +35,8 @@ export default function BgRemove() {
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
             Remover Fundo
-            <Image size={18} />
+            {/* Added alt text */}
+            <LucideImage size={18} aria-hidden="true" />
           </span>
         </Button>
       </PopoverTrigger>

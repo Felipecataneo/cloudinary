@@ -1,23 +1,29 @@
 // components/editor.tsx
 "use client"
-import React, { useEffect } from 'react'; // Import useEffect
+import React, { useEffect } from 'react';
+import dynamic from 'next/dynamic'; // Import dynamic
+
 import UploadForm from "./upload/upload-form"
 import ActiveImage from "./active-image"
 import { useLayerStore } from "@/lib/layer-store"
 import Layers from "./layers"
-import ImageTools from "./toolbar/image-tools"
-import VideoTools from "./toolbar/video-tools"
-import { ModeToggle } from "./toggle"
-import Loading from "./loading"
+// import Loading from "./loading" // Remove direct import
 import ExportAsset from "./toolbar/export-image"
 import ImageCombiner from "./image-combiner/index"
+import ImageTools from "./toolbar/image-tools" // Ensure these are imported
+import VideoTools from "./toolbar/video-tools" // Ensure these are imported
+import { ModeToggle } from "./toggle";
+
 import { Button } from "./ui/button"
-import { Combine, Menu, LayoutList, X } from "lucide-react" // Import icons
+import { Combine, Menu, LayoutList, X } from "lucide-react"
 import { useImageStore } from "@/lib/store"
-import { cn } from "@/lib/utils"; // Import cn
+import { cn } from "@/lib/utils";
+
+// Dynamically import Loading with ssr: false
+const Loading = dynamic(() => import("./loading"), { ssr: false });
+
 
 export default function Editor() {
-  // Fix: Pass a selector function to useLayerStore
   const {
     activeLayer,
     combinerMode,
@@ -36,10 +42,8 @@ export default function Editor() {
     setLayersSidebarOpen: state.setLayersSidebarOpen,
   }));
 
-  // Fix: Pass a selector function to useImageStore
   const { generating } = useImageStore(state => ({ generating: state.generating }));
 
-  // Function to close both sidebars
   const closeSidebars = () => {
     setToolsSidebarOpen(false);
     setLayersSidebarOpen(false);
@@ -53,15 +57,16 @@ export default function Editor() {
       }
     };
     document.addEventListener('keydown', handleEscape);
+    // Add closeSidebars to dependency array as it's used inside the effect
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [isToolsSidebarOpen, isLayersSidebarOpen]); // Re-run effect if sidebar state changes
+  }, [isToolsSidebarOpen, isLayersSidebarOpen, closeSidebars]); // ADD closeSidebars here
 
   // Effect to close sidebars when entering combiner mode
   useEffect(() => {
      if (combinerMode) {
         closeSidebars();
      }
-  }, [combinerMode]);
+  }, [combinerMode, closeSidebars]); // ADD closeSidebars here
 
   // Effect to ensure sidebars are closed on window resize to large screen
   useEffect(() => {
@@ -72,54 +77,51 @@ export default function Editor() {
           }
       };
       window.addEventListener('resize', handleResize);
+       // Add closeSidebars to dependency array as it's used inside the effect
       return () => window.removeEventListener('resize', handleResize);
-  }, [isToolsSidebarOpen, isLayersSidebarOpen]); // Re-run effect if sidebar state changes
+  }, [isToolsSidebarOpen, isLayersSidebarOpen, closeSidebars]); // ADD closeSidebars here
 
 
   return (
-    <div className="flex h-full relative"> {/* Use relative for fixed positioning context if needed */}
+    <div className="flex h-full relative">
 
       {/* Loading Overlay (Highest Z-index, shown regardless of sidebars) */}
-      {/* Loading component uses Dialog/Portal which handles z-index automatically */}
-      {generating && <Loading />}
+      {generating && <Loading />} {/* Use the dynamically imported Loading */}
 
       {/* --- Sidebar Toggles (Visible only on small screens) --- */}
-      {/* These are fixed positioned, so they live OUTSIDE the main flex layout */}
-      {/* Hide toggles in combiner mode */}
       {!combinerMode && (
           <>
               <Button
                   variant="outline"
                   size="icon"
-                  className="fixed top-4 left-4 z-40 lg:hidden" // Fixed pos, high z-index, hide on lg
+                  className="fixed top-4 left-4 z-40 lg:hidden"
                   onClick={() => setToolsSidebarOpen(true)}
                   aria-label="Abrir barra de ferramentas"
-                  disabled={isToolsSidebarOpen || isLayersSidebarOpen || generating} // Disable if any sidebar is open or generating
+                  // Disable if any sidebar is open, generating, or in combiner mode
+                  disabled={isToolsSidebarOpen || isLayersSidebarOpen || generating || combinerMode}
               >
-                 <Menu size={18} /> {/* Use Menu icon for tools */}
+                 <Menu size={18} />
               </Button>
 
                <Button
                    variant="outline"
                    size="icon"
-                   className="fixed top-4 right-4 z-40 lg:hidden" // Fixed pos, high z-index, hide on lg
+                   className="fixed top-4 right-4 z-40 lg:hidden"
                    onClick={() => setLayersSidebarOpen(true)}
                    aria-label="Abrir camadas"
-                   disabled={isToolsSidebarOpen || isLayersSidebarOpen || generating} // Disable if any sidebar is open or generating
+                    // Disable if any sidebar is open, generating, or in combiner mode
+                   disabled={isToolsSidebarOpen || isLayersSidebarOpen || generating || combinerMode}
                >
-                  <LayoutList size={18} /> {/* Use LayoutList for layers */}
+                  <LayoutList size={18} />
                </Button>
           </>
       )}
 
 
-      {/* --- Main Layout Container (Flex for large screens, handles content flow) --- */}
-      {/* This is the container that changes behavior based on breakpoint */}
-      <div className="flex w-full h-full flex-col lg:flex-row"> {/* Flex column on small, row on large */}
+      {/* --- Main Layout Container --- */}
+      <div className="flex w-full h-full flex-col lg:flex-row">
 
-         {/* Left Toolbar Area (Visible on large, hidden by default on small) */}
-         {/* In combinerMode, this area is also hidden */}
-         {/* Added lg:min-w-48 to apply min-width only on large screens */}
+         {/* Left Toolbar Area */}
          {!combinerMode && (
             <div className={cn("py-6 px-4 hidden lg:block lg:min-w-48", { "opacity-50 pointer-events-none": generating })}>
                 <div className="pb-12 text-center">
@@ -149,32 +151,25 @@ export default function Editor() {
          )}
 
 
-          {/* Main Content Area (Takes remaining space on large, full on small unless sidebar overlay is open) */}
-          {/* Added flex-grow and overflow-hidden to handle potential content overflow within the main view */}
+          {/* Main Content Area */}
           <div className="flex-1 relative flex flex-col items-center justify-center h-full overflow-hidden">
              {/* Conditional rendering for the main view */}
              {combinerMode ? (
-                 // Image Combiner takes full central area when active
-                 // Add flex-1 to ImageCombiner wrapper to ensure it fills height
-                 <div className="flex-1 w-full h-full"> {/* Added h-full here */}
+                 <div className="flex-1 w-full h-full">
                     <ImageCombiner />
                  </div>
              ) : activeLayer.url ? (
-                 // Show ActiveImage if there's an active layer URL (and not in combinerMode)
                  <ActiveImage />
              ) : (
-                 // Show UploadForm if no active layer URL (and not in combinerMode)
                  <UploadForm />
              )}
          </div>
 
 
-          {/* Right Layers Area (Visible on large, hidden by default on small) */}
-          {/* Added lg:basis-[320px] to apply basis only on large screens */}
+          {/* Right Layers Area */}
           {!combinerMode && (
              <div className={cn("shrink-0 hidden lg:block lg:basis-[320px]", { "opacity-50 pointer-events-none": generating })}>
-                  {/* Layers component already expects to be in a flex container */}
-                  <Layers /> {/* Layers component handles its own scrolling within the Card */}
+                  <Layers />
              </div>
           )}
 
@@ -182,31 +177,29 @@ export default function Editor() {
 
 
       {/* --- Sidebar Overlays (Fixed positioned, shown only on small screens) --- */}
-      {/* Backdrop (Shown when ANY sidebar overlay is open on small screens) */}
-      {/* Hide backdrop in combiner mode */}
+      {/* Backdrop */}
       {(isToolsSidebarOpen || isLayersSidebarOpen) && !combinerMode && (
           <div
-              className="fixed inset-0 bg-black/50 z-50 lg:hidden" // Higher z-index than toggles, lower than loading
+              className="fixed inset-0 bg-black/50 z-50 lg:hidden"
               onClick={closeSidebars}
               aria-hidden="true"
           ></div>
       )}
 
-      {/* Left Tools Overlay (Slides from left on small screens) */}
-      {/* Only show if not in combiner mode */}
+      {/* Left Tools Overlay */}
       {!combinerMode && (
           <div className={cn(
-              "fixed inset-y-0 left-0 w-64 bg-card shadow-xl z-[51] transition-transform duration-300 ease-in-out lg:hidden", // Higher z-index than backdrop
+              "fixed inset-y-0 left-0 w-64 bg-card shadow-xl z-[51] transition-transform duration-300 ease-in-out lg:hidden",
               isToolsSidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}>
-              <div className="py-6 px-4 flex flex-col h-full"> {/* Flex column to fill height */}
+              <div className="py-6 px-4 flex flex-col h-full">
                   <div className="flex justify-between items-center pb-12">
                       <h2 className="text-lg font-semibold">Ferramentas</h2>
                       <Button variant="ghost" size="icon" onClick={() => setToolsSidebarOpen(false)} aria-label="Fechar barra de ferramentas">
                           <X size={20} />
                       </Button>
                   </div>
-                   {/* Tools Content - Add flex-grow and overflow-y-auto for scrolling */}
+                   {/* Tools Content */}
                    <div className="flex flex-col gap-4 flex-grow overflow-y-auto scrollbar-thin scrollbar-track-secondary scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
                         <Button
                            variant={combinerMode ? "secondary" : "outline"}
@@ -228,14 +221,13 @@ export default function Editor() {
           </div>
       )}
 
-       {/* Right Layers Overlay (Slides from right on small screens) */}
-      {/* Only show if not in combiner mode */}
+       {/* Right Layers Overlay */}
        {!combinerMode && (
           <div className={cn(
               "fixed inset-y-0 right-0 w-80 bg-card shadow-xl z-[51] transition-transform duration-300 ease-in-out lg:hidden",
-              isLayersSidebarOpen ? "translate-x-0" : "translate-x-full" // Slide from right
+              isLayersSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}>
-               <div className="py-6 px-4 flex flex-col h-full"> {/* Flex column to fill height */}
+               <div className="py-6 px-4 flex flex-col h-full">
                    <div className="flex justify-between items-center pb-12">
                        <h2 className="text-lg font-semibold">Camadas</h2>
                        <Button variant="ghost" size="icon" onClick={() => setLayersSidebarOpen(false)} aria-label="Fechar camadas">

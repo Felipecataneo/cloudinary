@@ -1,9 +1,12 @@
 "use client"
 
+import dynamic from 'next/dynamic'; // Import dynamic
 import Editor from "@/components/editor"
-import Loading from "@/components/loading"
+
 import { LayerStore } from "@/lib/layer-store"
 import { ImageStore } from "@/lib/store"
+
+const Loading = dynamic(() => import("@/components/loading"), { ssr: false });
 export default function Home() {
   return (
     <ImageStore.Provider
@@ -27,6 +30,7 @@ export default function Home() {
           ],
         }}
       >
+        <Loading />
         <Editor />
       </LayerStore.Provider>
     </ImageStore.Provider>
