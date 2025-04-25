@@ -47,21 +47,34 @@ type State = {
   updateLayer: (layer: Layer) => void
   setPoster: (id: string, posterUrl: string) => void
   setTranscription: (id: string, transcriptionURL: string) => void
-  layerComparisonMode: boolean // Existing mode
+  layerComparisonMode: boolean
   setLayerComparisonMode: (mode: boolean) => void
   comparedLayers: string[]
   setComparedLayers: (layers: string[]) => void
   toggleComparedLayer: (id: string) => void
+
   // NEW: Combiner Mode
   combinerMode: boolean
   setCombinerMode: (mode: boolean) => void
+
+  // NEW: Sidebar States
+  isToolsSidebarOpen: boolean
+  isLayersSidebarOpen: boolean
+  setToolsSidebarOpen: (open: boolean) => void
+  setLayersSidebarOpen: (open: boolean) => void
 }
 
 const getStore = (initialState: {
   layers: Layer[]
-  layerComparisonMode: boolean
+  layerComparisonMode: boolean // Keep initial state for these if needed
 }) => {
   return createStore<State>()(
+    // Use persist middleware for localStorage if needed
+    // For sidebar states, it's usually better NOT to persist them across sessions
+    // as the layout might change or the state is confusing on reload.
+    // Let's move persist outside and apply it only to the relevant parts (like layers)
+    // Or keep it simple for now and don't worry about partial persistence.
+    // Assuming persist is for the whole store for now, but sidebar state will be false on reload.
     persist(
       (set) => ({
         layers: initialState.layers,
@@ -111,17 +124,31 @@ const getStore = (initialState: {
           set((state) => {
             const newComparedLayers = state.comparedLayers.includes(id)
               ? state.comparedLayers.filter((layerId) => layerId !== id)
-              : [...state.comparedLayers, id].slice(-2); // Keep only the last two
+              : [...state.comparedLayers, id].slice(-2) // Keep only the last two
             return {
               comparedLayers: newComparedLayers,
               layerComparisonMode: newComparedLayers.length > 0,
-            };
+            }
           }),
+
         // NEW: Combiner Mode state and setter
         combinerMode: false,
-        setCombinerMode: (mode: boolean) => set({ combinerMode: mode }),
+        setCombinerMode: (mode: boolean) => {
+          // When entering combiner mode, close sidebars for cleanliness
+          if (mode) {
+             set({ combinerMode: mode, isToolsSidebarOpen: false, isLayersSidebarOpen: false });
+          } else {
+             set({ combinerMode: mode });
+          }
+        },
+
+        // NEW: Sidebar States and setters
+        isToolsSidebarOpen: false,
+        isLayersSidebarOpen: false,
+        setToolsSidebarOpen: (open: boolean) => set({ isToolsSidebarOpen: open }),
+        setLayersSidebarOpen: (open: boolean) => set({ isLayersSidebarOpen: open }),
       }),
-      { name: "layer-storage" }
+      { name: "layer-storage" } // Persists all state currently, including sidebar booleans (will reset to false on load)
     )
   )
 }
