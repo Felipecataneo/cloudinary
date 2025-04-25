@@ -571,7 +571,7 @@ const ImageCombiner = () => { // Define component as const for consistent export
                 setLeftMediaType(detectedType);
                 setLeftMedia(result);
                 setLeftLoadError(null); // Clear error on successful read
-              } else { setLeftLoadError("Erro interno ao ler arquivo esquerdo."); } // Set specific error
+              } else { setLeftLoadError("Erro interno ao processar arquivo da esquerda."); } // Set specific error
             };
             reader.onerror = () => { setLeftLoadError("Erro ao ler o arquivo esquerdo."); }; // Set specific error
             reader.readAsDataURL(file);
@@ -597,7 +597,7 @@ const ImageCombiner = () => { // Define component as const for consistent export
                 setRightMediaType(detectedType);
                 setRightMedia(result);
                 setRightLoadError(null); // Clear error on successful read
-              } else { setRightLoadError("Erro interno ao ler arquivo direito."); } // Set specific error
+              } else { setRightLoadError("Erro interno ao processar arquivo da direita."); } // Set specific error
             };
             reader.onerror = () => { setRightLoadError("Erro ao ler o arquivo direito."); }; // Set specific error
             reader.readAsDataURL(file);

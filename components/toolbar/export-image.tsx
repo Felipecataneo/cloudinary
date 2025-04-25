@@ -62,14 +62,14 @@ export default function ExportAsset({ resource }: { resource: string }) {
       <DialogTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            Export
+            Exportar
             <Download size={18} />
           </span>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <div>
-          <h3 className="text-center text-2xl font-medium pb-4">Export</h3>
+          <h3 className="text-center text-2xl font-medium pb-4">Exportar</h3>
           <div className="flex flex-col gap-4">
             <Card
               onClick={() => setSelected("original")}
@@ -108,7 +108,7 @@ export default function ExportAsset({ resource }: { resource: string }) {
               )}
             >
               <CardContent className="p-0">
-                <CardTitle className="text-md">Medium</CardTitle>
+                <CardTitle className="text-md">Médio</CardTitle>
                 <CardDescription>
                   {(activeLayer.width! * 0.5).toFixed(0)}X
                   {(activeLayer.height! * 0.5).toFixed(0)}
@@ -123,7 +123,7 @@ export default function ExportAsset({ resource }: { resource: string }) {
               onClick={() => setSelected("small")}
             >
               <CardContent className="p-0">
-                <CardTitle className="text-md">Small</CardTitle>
+                <CardTitle className="text-md">Pequeno</CardTitle>
                 <CardDescription>
                   {(activeLayer.width! * 0.3).toFixed(0)}X
                   {(activeLayer.height! * 0.3).toFixed(0)}
@@ -133,7 +133,7 @@ export default function ExportAsset({ resource }: { resource: string }) {
           </div>
         </div>
         <Button onClick={handleDownload}>
-          Download {selected} {resource}
+          Baixar {selected} {resource}
         </Button>
       </DialogContent>
     </Dialog>

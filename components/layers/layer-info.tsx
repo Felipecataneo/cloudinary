@@ -33,17 +33,17 @@ export default function LayerInfo({
       </DialogTrigger>
       <DialogContent className="text-xs">
         <h3 className="text-lg font-medium text-center mb-2">
-          Layer {layer.id}
+          Camada {layer.id}
         </h3>
         <div className="py-4 space-y-0.5">
           <p>
-            <span className="font-bold">Filename:</span> {layer.name}
+            <span className="font-bold">Nome do arquivo:</span> {layer.name}
           </p>
           <p>
-            <span className="font-bold">Format:</span> {layer.format}
+            <span className="font-bold">Formato:</span> {layer.format}
           </p>
           <p>
-            <span className="font-bold"> Size:</span> {layer.width}X
+            <span className="font-bold">Tamanho:</span> {layer.width}X
             {layer.height}
           </p>
         </div>
@@ -56,7 +56,7 @@ export default function LayerInfo({
           variant={"destructive"}
           className="flex items-center gap-2 w-full"
         >
-          <span> Delete Layer</span>
+          <span>Excluir Camada</span>
           <Trash size={14} />
         </Button>
       </DialogContent>

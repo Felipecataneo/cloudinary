@@ -6,7 +6,7 @@ import { useImageStore } from "@/lib/store"
 import { useState } from "react"
 import { toast } from "sonner"
 import { initiateTranscription } from "@/server/transcribe"
-import { Captions } from "lucide-react"
+import { Captions, AlignCenter } from "lucide-react"
 
 export default function VideoTranscription() {
   const activeLayer = useLayerStore((state) => state.activeLayer)
@@ -42,12 +42,12 @@ export default function VideoTranscription() {
         } else if (result.data && "error" in result.data) {
           toast.error(result.data.error)
         } else {
-          toast.error("Unexpected response from server")
+          toast.error("Resposta inesperada do servidor")
         }
       }
     } catch (error) {
-      toast.error("An error occurred during transcription")
-      console.error("Transcription error:", error)
+      toast.error("Ocorreu um erro durante a transcrição")
+      console.error("Erro na transcrição:", error)
     } finally {
       setTranscribing(false)
       setGenerating(false)
@@ -64,24 +64,24 @@ export default function VideoTranscription() {
           variant={"outline"}
         >
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            {transcribing ? "Transcribing..." : "Transcribe"}
-            <Captions size={18} />
+            {transcribing ? "Transcrevendo..." : "Transcrever Vídeo"}
+            <AlignCenter size={18} />
           </span>
         </Button>
       )}
 
       {activeLayer.transcriptionURL && (
-        <Button className="py-8 w-full" variant={"outline"} asChild>
-          <a
-            href={activeLayer.transcriptionURL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-              View Transcription
-              <Captions size={18} />
-            </span>
-          </a>
+        <Button
+          variant={"outline"}
+          className="py-8 w-full"
+          onClick={() => {
+            window.open(activeLayer.transcriptionURL, "_blank")
+          }}
+        >
+          <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
+            Abrir Vídeo Com Legendas
+            <AlignCenter size={18} />
+          </span>
         </Button>
       )}
     </div>

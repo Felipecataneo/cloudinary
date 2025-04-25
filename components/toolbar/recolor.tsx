@@ -36,7 +36,7 @@ export default function AIRecolor() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            AI Recolor
+            Recolorir
             <Paintbrush size={18} />
           </span>
         </Button>
@@ -44,17 +44,17 @@ export default function AIRecolor() {
       <PopoverContent className="w-full">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">Generative Recolor</h4>
+            <h4 className="font-medium leading-none">Recolorir Partes</h4>
             <p className="text-sm text-muted-foreground">
-              Recolor any part of your image with generative recolor.
+              Altere as cores de partes específicas da imagem
             </p>
           </div>
           <div className="grid gap-2">
-            <h3 className="text-xs">Suggested selections</h3>
+            <h3 className="text-xs">Seleções sugeridas</h3>
             <div className="flex gap-2">
               {tags.length === 0 && (
                 <p className="text-xs text-muted-foreground">
-                  No tags available
+                  Nenhuma tag disponível
                 </p>
               )}
               {tags.map((tag) => (
@@ -71,7 +71,7 @@ export default function AIRecolor() {
               ))}
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="width">Selection</Label>
+              <Label htmlFor="width">Seleção</Label>
               <Input
                 className="col-span-2 h-8"
                 value={activeTag}
@@ -81,7 +81,7 @@ export default function AIRecolor() {
                 }}
               />
             </div>
-            <h3 className="text-xs">Suggested colors</h3>
+            <h3 className="text-xs">Cores sugeridas</h3>
             <div className="flex gap-2">
               <div
                 className="w-4 h-4 bg-blue-500 rounded-sm cursor-pointer"
@@ -101,7 +101,7 @@ export default function AIRecolor() {
               ></div>
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxWidth">Color</Label>
+              <Label htmlFor="maxWidth">Cor</Label>
               <Input
                 name="color"
                 value={activeColor}
@@ -112,10 +112,8 @@ export default function AIRecolor() {
           </div>
         </div>
         <Button
-          disabled={
-            !activeLayer?.url || !activeTag || !activeColor || generating
-          }
           className="w-full mt-4"
+          disabled={!activeTag || !activeColor || !activeLayer?.url || generating}
           onClick={async () => {
             setGenerating(true)
             const res = await recolorImage({
@@ -141,7 +139,7 @@ export default function AIRecolor() {
             }
           }}
         >
-          {generating ? "Generating..." : "Recolor"}
+          {generating ? "Recolorindo..." : "Recolorir 🎨"}
         </Button>
       </PopoverContent>
     </Popover>

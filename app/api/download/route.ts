@@ -3,9 +3,9 @@ import cloudinary from "cloudinary"
 import { checkImageProcessing } from "@/server/url_process"
 
 cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-  cname: process.env.CLOUDINARY_NAME,
 })
 
 export async function GET(request: NextRequest) {
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   const activeUrl = searchParams.get("url")
 
   if (!publicId) {
-    return new NextResponse("Missing publicId parameter", { status: 400 })
+    return new NextResponse("Parâmetro publicId ausente", { status: 400 })
   }
 
   let selected = ""
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
         selected = "q_30"
         break
       default:
-        return new NextResponse("Invalid quality parameter", { status: 400 })
+        return new NextResponse("Parâmetro de qualidade inválido", { status: 400 })
     }
   }
 
@@ -59,16 +59,16 @@ export async function GET(request: NextRequest) {
     }
 
     if (!isProcessed) {
-      throw new Error("Image processing timed out")
+      throw new Error("Tempo limite de processamento da imagem excedido")
     }
     return NextResponse.json({
       url,
       filename: `${publicId}.${quality}.${format}`,
     })
   } catch (error) {
-    console.error("Error generating image URL:", error)
+    console.error("Erro ao gerar URL da imagem:", error)
     return NextResponse.json(
-      { error: "Error generating image URL" },
+      { error: "Erro ao gerar URL da imagem" },
       { status: 500 }
     )
   }

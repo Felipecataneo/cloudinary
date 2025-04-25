@@ -147,7 +147,7 @@ export default function GenerativeFill() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            Generative Fill
+            Preenchimento Generativo
             <Crop size={18} />
           </span>
         </Button>
@@ -156,36 +156,36 @@ export default function GenerativeFill() {
         <div className="flex flex-col h-full">
           <div className="space-y-2">
             <h4 className="font-medium text-center py-2 leading-none">
-              Generative Fill
+              Preenchimento Generativo
             </h4>
             {activeLayer.width && activeLayer.height ? (
-              <div className="flex justify-evenly">
-                <div className="flex flex-col items-center">
-                  <span className="text-xs">Current Size:</span>
-                  <p className="text-sm text-primary font-bold">
-                    {activeLayer.width}X{activeLayer.height}
-                  </p>
+              <div className="grid gap-2">
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor="width">Largura</Label>
+                  <Input
+                    id="width"
+                    type="number"
+                    value={width}
+                    onChange={(e) => setWidth(parseInt(e.target.value))}
+                    className="col-span-2 h-8"
+                  />
                 </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-xs">New Size:</span>
-                  <p className="text-sm text-primary font-bold">
-                    <Popover>
-                      <PopoverTrigger>
-                        {activeLayer.width + width}
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <Input name="width" type="number" />
-                      </PopoverContent>
-                    </Popover>
-                    X{activeLayer.height + height}
-                  </p>
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor="height">Altura</Label>
+                  <Input
+                    id="height"
+                    type="number"
+                    value={height}
+                    onChange={(e) => setHeight(parseInt(e.target.value))}
+                    className="col-span-2 h-8"
+                  />
                 </div>
               </div>
             ) : null}
           </div>
           <div className="flex gap-2 items-center justify-center">
             <div className="text-center">
-              <Label htmlFor="maxWidth">Modify Width</Label>
+              <Label htmlFor="maxWidth">Modificar Largura</Label>
               <Input
                 name="width"
                 type="range"
@@ -196,7 +196,7 @@ export default function GenerativeFill() {
               />
             </div>
             <div className="text-center">
-              <Label htmlFor="maxHeight">Modify Height</Label>
+              <Label htmlFor="maxHeight">Modificar Altura</Label>
               <Input
                 name="height"
                 type="range"
@@ -236,7 +236,7 @@ export default function GenerativeFill() {
             disabled={!activeLayer.url || (!width && !height) || generating}
             onClick={handleGenFill}
           >
-            {generating ? "Generating" : "Generative Fill 🎨"}
+            {generating ? "Gerando..." : "Preencher Imagem 🎨"}
           </Button>
         </div>
       </PopoverContent>

@@ -5,7 +5,7 @@ import { actionClient } from "@/server/safe-action"
 import z from "zod"
 
 cloudinary.config({
-  cloud_name: "restyled",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 })
@@ -24,8 +24,8 @@ export const uploadImage = actionClient
     console.log(image)
     const formImage = image.get("image")
 
-    if (!formImage) return { error: "No image provided" }
-    if (!image) return { error: "No image provided" }
+    if (!formImage) return { error: "Nenhuma imagem enviada" }
+    if (!image) return { error: "Nenhuma imagem enviada" }
 
     const file = formImage as File
 
@@ -43,8 +43,8 @@ export const uploadImage = actionClient
           },
           (error, result) => {
             if (error || !result) {
-              console.error("Upload failed:", error)
-              reject({ error: "Upload failed" })
+              console.error("Erro ao fazer upload:", error)
+              reject({ error: "Falha ao fazer upload da imagem" })
             } else {
               console.log("Upload successful:", result)
               resolve({ success: result })
@@ -55,7 +55,7 @@ export const uploadImage = actionClient
         uploadStream.end(buffer)
       })
     } catch (error) {
-      console.error("Error processing file:", error)
-      return { error: "Error processing file" }
+      console.error("Erro ao fazer upload:", error)
+      return { error: "Falha ao fazer upload da imagem" }
     }
   })

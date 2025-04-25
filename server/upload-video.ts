@@ -5,7 +5,7 @@ import { actionClient } from "@/server/safe-action"
 import z from "zod"
 
 cloudinary.config({
-  cloud_name: "restyled",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 })
@@ -24,8 +24,8 @@ export const uploadVideo = actionClient
     console.log(video)
     const formVideo = video.get("video")
 
-    if (!formVideo) return { error: "No video provided" }
-    if (!video) return { error: "No video provided" }
+    if (!formVideo) return { error: "Nenhum vídeo enviado" }
+    if (!video) return { error: "Nenhum vídeo enviado" }
 
     const file = formVideo as File
 
@@ -44,10 +44,10 @@ export const uploadVideo = actionClient
           },
           (error, result) => {
             if (error || !result) {
-              console.error("Upload failed:", error)
-              reject({ error: "Upload failed" })
+              console.error("Erro ao fazer upload:", error)
+              reject({ error: "Falha ao fazer upload do vídeo" })
             } else {
-              console.log("Upload successful:", result)
+              console.log("Upload bem sucedido:", result)
               resolve({ success: result })
             }
           }
@@ -56,7 +56,7 @@ export const uploadVideo = actionClient
         uploadStream.end(buffer)
       })
     } catch (error) {
-      console.error("Error processing file:", error)
-      return { error: "Error processing file" }
+      console.error("Erro ao fazer upload:", error)
+      return { error: "Falha ao fazer upload do vídeo" }
     }
   })

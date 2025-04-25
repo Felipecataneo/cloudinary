@@ -5,7 +5,7 @@ import { actionClient } from "@/server/safe-action"
 import z from "zod"
 
 cloudinary.config({
-  cloud_name: "restyled",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 })
@@ -51,9 +51,9 @@ function generateSubtitledVideoUrl(publicId: string): string {
 export const initiateTranscription = actionClient
   .schema(transcriptionData)
   .action(async ({ parsedInput: { publicId } }) => {
-    console.log("Initiating transcription for:", publicId)
+    console.log("Iniciando transcrição para:", publicId)
     try {
-      // Initiate transcription
+      // Iniciar transcrição
       await cloudinary.api.update(publicId, {
         resource_type: "video",
         raw_convert: "google_speech",
@@ -66,24 +66,27 @@ export const initiateTranscription = actionClient
 
       for (let attempt = 0; attempt < maxAttempts; attempt++) {
         status = await checkTranscriptionStatus(publicId)
-        console.log(`Attempt ${attempt + 1}: Transcription status - ${status}`)
+        console.log(`Tentativa ${attempt + 1}: Status da transcrição - ${status}`)
 
         if (status === "complete") {
           const subtitledVideoUrl = generateSubtitledVideoUrl(publicId)
-          return { success: "Transcription completed", subtitledVideoUrl }
+          return { 
+            success: "Transcrição completada com sucesso!",
+            subtitledVideoUrl 
+          }
         } else if (status === "failed") {
-          return { error: "Transcription failed" }
+          return { error: "Transcrição falhou" }
         }
 
         await new Promise((resolve) => setTimeout(resolve, delay))
       }
 
-      return { error: "Transcription timed out" }
+      return { error: "Tempo limite excedido ao processar o vídeo" }
     } catch (error) {
-      console.error("Error in transcription process:", error)
+      console.error("Erro no processo de transcrição:", error)
       return {
         error:
-          "Error in transcription process: " +
+          "Erro no processo de transcrição: " +
           (error instanceof Error ? error.message : String(error)),
       }
     }

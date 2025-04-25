@@ -79,10 +79,12 @@ export default function UploadVideo() {
           <Lottie className="h-48" animationData={videoAnimation} />
           <p className="text-muted-foreground text-2xl">
             {isDragActive
-              ? "Drop your video here!"
-              : "Start by uploading a video"}
+              ? "Solte seu vídeo aqui!"
+              : "Comece carregando um vídeo"}
           </p>
-          <p className="text-muted-foreground">Supported Format: .mp4</p>
+          <p className="text-muted-foreground">
+            Formatos suportados: .mp4 .mov .avi .webm
+          </p>
         </div>
       </CardContent>
     </Card>

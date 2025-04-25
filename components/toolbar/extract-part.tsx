@@ -43,7 +43,7 @@ export default function ExtractPart() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            AI Extract
+            Extração IA
             <Scissors size={18} />
           </span>
         </Button>
@@ -51,9 +51,9 @@ export default function ExtractPart() {
       <PopoverContent className="w-full">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">AI Extract</h4>
+            <h4 className="font-medium leading-none">Extração IA</h4>
             <p className="text-sm text-muted-foreground">
-              Extract specific areas or objects from your image using AI.
+              Extraia áreas específicas ou objetos da sua imagem usando IA.
             </p>
           </div>
           <div className="grid gap-2">
@@ -64,13 +64,13 @@ export default function ExtractPart() {
                   id={`prompt-${index}`}
                   value={prompt}
                   onChange={(e) => updatePrompt(index, e.target.value)}
-                  placeholder="Describe what to extract"
+                  placeholder="Descreva o que extrair"
                   className="col-span-2 h-8"
                 />
               </div>
             ))}
             <Button onClick={addPrompt} size="sm">
-              Add Prompt
+              Adicionar Prompt
             </Button>
 
             <div className="flex items-center space-x-2">
@@ -79,19 +79,19 @@ export default function ExtractPart() {
                 checked={multiple}
                 onCheckedChange={(checked) => setMultiple(checked as boolean)}
               />
-              <Label htmlFor="multiple">Extract multiple objects</Label>
+              <Label htmlFor="multiple">Extrair múltiplos objetos</Label>
             </div>
 
             <RadioGroup value={mode} onValueChange={setMode}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default" id="mode-default" />
                 <Label htmlFor="mode-default">
-                  Default (transparent background)
+                  Padrão (fundo transparente)
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="mask" id="mode-mask" />
-                <Label htmlFor="mode-mask">Mask</Label>
+                <Label htmlFor="mode-mask">Máscara</Label>
               </div>
             </RadioGroup>
 
@@ -101,7 +101,7 @@ export default function ExtractPart() {
                 checked={invert}
                 onCheckedChange={(checked) => setInvert(checked as boolean)}
               />
-              <Label htmlFor="invert">Invert (keep background)</Label>
+              <Label htmlFor="invert">Inverter (manter fundo)</Label>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function ExtractPart() {
             }
           }}
         >
-          {generating ? "Extracting..." : "Extract"}
+          {generating ? "Extraindo..." : "Extrair Elementos"}
         </Button>
       </PopoverContent>
     </Popover>

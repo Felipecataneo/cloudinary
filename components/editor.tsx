@@ -36,7 +36,7 @@ export default function Editor() {
              disabled={generating} // Disable while any operation is generating
           >
              <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-                {combinerMode ? "Exit Combiner" : "Image Combiner"}
+                {combinerMode ? "Sair do Combinador" : "Combinador de Imagens"}
                 <Combine size={18} />
              </span>
           </Button>

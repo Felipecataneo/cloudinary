@@ -65,20 +65,20 @@ export function ControlPanel({
       {/* --- Left Tab Content --- */}
       <TabsContent value="left" className="mt-4 space-y-4">
         <Card className="p-4">
-          <Label htmlFor="left-zoom" className="block mb-2 font-medium flex items-center"><ZoomIn size={16} className="mr-2" /> Zoom ({leftZoom.toFixed(0)}%)</Label>
-          <Slider
-            id="left-zoom"
-            min={MIN_ZOOM}
-            max={MAX_ZOOM}
-            step={1}
-            value={[leftZoom]}
-            // When zoom changes, update state. Drawing is handled by effect in preview area.
-            onValueChange={(v) => { setLeftZoom(v[0]); /* requestDraw?.(); */ }}
-            disabled={!leftMediaElement || isLoadingLeft}
-            aria-label="Adjust left image zoom"
-          />
-          <div className="mt-4">
-            <Label className="block mb-1 font-medium flex items-center"><Move size={16} className="mr-2" /> Posição (Foco)</Label>
+          <div>
+            <Label className="block mb-1 font-medium flex items-center">
+              <ZoomIn size={16} className="mr-2" /> Zoom Relativo
+            </Label>
+            <Slider
+              defaultValue={[1]}
+              max={2}
+              min={0.1}
+              step={0.1}
+              value={[leftZoom]}
+              onValueChange={(v) => setLeftZoom(v[0])}
+              disabled={!leftMediaElement || isLoadingLeft}
+              aria-label="Ajustar zoom relativo"
+            />
             <p className="text-xs text-muted-foreground">Arraste a mídia na pré-visualização ou use a pinça (touch) para zoom.</p>
           </div>
         </Card>
@@ -87,20 +87,20 @@ export function ControlPanel({
       {/* --- Right Tab Content --- */}
       <TabsContent value="right" className="mt-4 space-y-4">
         <Card className="p-4">
-          <Label htmlFor="right-zoom" className="block mb-2 font-medium flex items-center"><ZoomIn size={16} className="mr-2" /> Zoom ({rightZoom.toFixed(0)}%)</Label>
-          <Slider
-            id="right-zoom"
-            min={MIN_ZOOM}
-            max={MAX_ZOOM}
-            step={1}
-            value={[rightZoom]}
-             // When zoom changes, update state. Drawing is handled by effect in preview area.
-            onValueChange={(v) => { setRightZoom(v[0]); /* requestDraw?.(); */ }}
-            disabled={!rightMediaElement || isLoadingRight}
-            aria-label="Adjust right image zoom"
-          />
-          <div className="mt-4">
-            <Label className="block mb-1 font-medium flex items-center"><Move size={16} className="mr-2" /> Posição (Foco)</Label>
+          <div>
+            <Label className="block mb-1 font-medium flex items-center">
+              <ZoomIn size={16} className="mr-2" /> Zoom Relativo
+            </Label>
+            <Slider
+              defaultValue={[1]}
+              max={2}
+              min={0.1}
+              step={0.1}
+              value={[rightZoom]}
+              onValueChange={(v) => setRightZoom(v[0])}
+              disabled={!rightMediaElement || isLoadingRight}
+              aria-label="Ajustar zoom relativo"
+            />
             <p className="text-xs text-muted-foreground">Arraste a mídia na pré-visualização ou use a pinça (touch) para zoom.</p>
           </div>
         </Card>
@@ -109,54 +109,64 @@ export function ControlPanel({
       {/* --- Logo Tab Content --- */}
       <TabsContent value="logo" className="mt-4 space-y-4">
         <Card className="p-4">
-          <Label htmlFor="logo-zoom" className="block mb-2 font-medium flex items-center"><ZoomIn size={16} className="mr-2" /> Largura Relativa ({logoZoom.toFixed(1)}%)</Label>
-          {/* Max zoom/size for logo can be different, maybe relative to the container width? */}
-          <Slider
-            id="logo-zoom"
-            min={1}
-            max={50} // Logo max width is 50% of combined preview container width
-            step={0.1}
-            value={[logoZoom]}
-            // Fix: Use setLogoZoom
-            onValueChange={(v) => setLogoZoom(v[0])} // Call parent callback directly
-            disabled={!logoElement || isLoadingLogo}
-            aria-label="Adjust logo relative size"
-          />
-          <div className="mt-4">
-            <Label className="block mb-1 font-medium flex items-center"><Move size={16} className="mr-2" /> Posição Central</Label>
-            <p className="text-xs text-muted-foreground">Arraste o logo na pré-visualização ou ajuste abaixo.</p>
-            <div className="grid grid-cols-2 gap-2 mt-2">
-              <div>
-                <Label htmlFor="logo-pos-x" className='text-xs text-muted-foreground'>X (%)</Label>
-                <Input
-                  id="logo-pos-x"
-                  type="number"
-                  min={0}
-                  max={100}
-                  step={0.1}
-                  value={logoPosition.x.toFixed(1)}
-                   // Fix: Use setLogoPosition
-                  onChange={(e) => setLogoPosition({ ...logoPosition, x: clamp(Number(e.target.value), 0, 100) })}
-                  disabled={!logoElement || isLoadingLogo}
-                  aria-label="Adjust logo horizontal position in percentage"
-                  className="h-8 text-sm"
-                />
-              </div>
-              <div>
-                <Label htmlFor="logo-pos-y" className='text-xs text-muted-foreground'>Y (%)</Label>
-                <Input
-                  id="logo-pos-y"
-                  type="number"
-                  min={0}
-                  max={100}
-                  step={0.1}
-                  value={logoPosition.y.toFixed(1)}
-                  // Fix: Use setLogoPosition
-                  onChange={(e) => setLogoPosition({ ...logoPosition, y: clamp(Number(e.target.value), 0, 100) })}
-                  disabled={!logoElement || isLoadingLogo}
-                  aria-label="Adjust logo vertical position in percentage"
-                  className="h-8 text-sm"
-                />
+          <div>
+            <Label className="block mb-1 font-medium flex items-center">
+              <ZoomIn size={16} className="mr-2" /> Tamanho Relativo
+            </Label>
+            <Slider
+              defaultValue={[1]}
+              max={2}
+              min={0.1}
+              step={0.1}
+              value={[logoZoom]}
+              onValueChange={(v) => setLogoZoom(v[0])}
+              disabled={!logoElement || isLoadingLogo}
+              aria-label="Ajustar tamanho relativo do logo"
+            />
+            <div className="mt-4">
+              <Label className="block mb-1 font-medium flex items-center">
+                <Move size={16} className="mr-2" /> Posição Central
+              </Label>
+              <p className="text-xs text-muted-foreground">Arraste o logo na pré-visualização ou ajuste abaixo.</p>
+              <div className="grid grid-cols-2 gap-4 mt-2">
+                <div>
+                  <Label className="text-xs">Horizontal (%)</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={0.1}
+                    value={logoPosition.x.toFixed(1)}
+                    onChange={(e) =>
+                      setLogoPosition({
+                        ...logoPosition,
+                        x: clamp(Number(e.target.value), 0, 100),
+                      })
+                    }
+                    disabled={!logoElement || isLoadingLogo}
+                    aria-label="Ajustar posição horizontal do logo em porcentagem"
+                    className="h-8 text-sm"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Vertical (%)</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={0.1}
+                    value={logoPosition.y.toFixed(1)}
+                    onChange={(e) =>
+                      setLogoPosition({
+                        ...logoPosition,
+                        y: clamp(Number(e.target.value), 0, 100),
+                      })
+                    }
+                    disabled={!logoElement || isLoadingLogo}
+                    aria-label="Ajustar posição vertical do logo em porcentagem"
+                    className="h-8 text-sm"
+                  />
+                </div>
               </div>
             </div>
           </div>

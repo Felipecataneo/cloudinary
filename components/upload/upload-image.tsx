@@ -90,11 +90,11 @@ export default function UploadImage() {
             <Lottie className="h-48" animationData={imageAnimation} />
             <p className="text-muted-foreground text-2xl">
               {isDragActive
-                ? "Drop your image here!"
-                : "Start by uploading an image"}
+                ? "Solte sua imagem aqui!"
+                : "Comece carregando uma imagem"}
             </p>
             <p className="text-muted-foreground">
-              Supported Formats .jpeg .jpg .png .webp
+              Formatos suportados: .jpeg .jpg .png .webp
             </p>
           </div>
         </CardContent>

@@ -44,7 +44,7 @@ export default function UploadForm() {
                 }`}
                 htmlFor="image-mode"
               >
-                Image Mode
+                Modo Imagem
               </Label>
             </CardContent>
             <ImageIcon
@@ -67,7 +67,7 @@ export default function UploadForm() {
                 }`}
                 htmlFor="video-mode"
               >
-                Video Mode
+                Modo Vídeo
               </Label>
             </CardContent>
             <VideoIcon

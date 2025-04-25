@@ -21,13 +21,14 @@ export default function Loading() {
     <Dialog open={generating} onOpenChange={setGenerating}>
       <DialogContent className="sm:max-w-[425px] flex flex-col items-center">
         <DialogHeader>
-          <DialogTitle>Editing {activeLayer.name}</DialogTitle>
+          <DialogTitle>Processando</DialogTitle>
           <DialogDescription>
-            Please note that this operation might take up to a couple of
-            seconds.
+            Aguarde enquanto processamos sua mídia...
           </DialogDescription>
         </DialogHeader>
-        <Lottie className="w-36" animationData={loadingAnimation} />
+        <div className="w-48 h-48 relative mx-auto">
+          <Lottie animationData={loadingAnimation} />
+        </div>
       </DialogContent>
     </Dialog>
   )

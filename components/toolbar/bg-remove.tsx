@@ -33,7 +33,7 @@ export default function BgRemove() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            BG Removal
+            Remover Fundo
             <Image size={18} />
           </span>
         </Button>
@@ -41,9 +41,9 @@ export default function BgRemove() {
       <PopoverContent className="w-full">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">Background Removal</h4>
+            <h4 className="font-medium leading-none">Remoção de Fundo</h4>
             <p className="text-sm max-w-xs text-muted-foreground">
-              Remove the background of an image with one simple click.
+              Remova o fundo de uma imagem com um único clique.
             </p>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function BgRemove() {
             }
           }}
         >
-          {generating ? "Removing..." : "Remove Background"}
+          {generating ? "Removendo..." : "Remover Fundo"}
         </Button>
       </PopoverContent>
     </Popover>

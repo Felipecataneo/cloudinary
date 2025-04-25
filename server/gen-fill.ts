@@ -6,7 +6,7 @@ import z from "zod"
 import { Cloudinary } from "@cloudinary/url-gen"
 
 cloudinary.config({
-  cloud_name: "restyled",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 })
@@ -51,7 +51,7 @@ export const genFill = actionClient
     }
 
     if (!isProcessed) {
-      return { error: "Image processing failed" }
+      return { error: "Falha ao processar a imagem" }
     }
     return { success: fillUrl }
   })

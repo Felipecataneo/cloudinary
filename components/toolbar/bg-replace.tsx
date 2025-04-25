@@ -28,7 +28,7 @@ export default function AIBackgroundReplace() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            AI BG Replace
+            Substituir Fundo IA
             <ImageOff size={18} />
           </span>
         </Button>
@@ -36,29 +36,27 @@ export default function AIBackgroundReplace() {
       <PopoverContent className="w-full">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">
-              Generative Background Replace
-            </h4>
+            <h4 className="font-medium leading-none">Substituir Fundo com IA</h4>
             <p className="text-sm text-muted-foreground">
-              Replace the background of your image with AI-generated content.
+              Substitua o fundo atual por uma nova cena gerada por IA
             </p>
           </div>
           <div className="grid gap-2">
             <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="prompt">Prompt (optional)</Label>
+              <Label htmlFor="prompt">Prompt</Label>
               <Input
                 id="prompt"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Describe the new background"
+                placeholder="Ex: praia tropical"
                 className="col-span-2 h-8"
               />
             </div>
           </div>
         </div>
         <Button
-          disabled={!activeLayer?.url || generating}
           className="w-full mt-4"
+          disabled={!activeLayer?.url || !prompt || generating}
           onClick={async () => {
             setGenerating(true)
             const res = await replaceBackground({
@@ -83,7 +81,7 @@ export default function AIBackgroundReplace() {
             }
           }}
         >
-          {generating ? "Generating..." : "Replace Background"}
+          {generating ? "Gerando..." : "Substituir Fundo"}
         </Button>
       </PopoverContent>
     </Popover>

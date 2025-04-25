@@ -5,7 +5,7 @@ import { actionClient } from "@/server/safe-action"
 import z from "zod"
 
 cloudinary.config({
-  cloud_name: "restyled",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 })
@@ -46,7 +46,7 @@ export const genRemove = actionClient
     }
 
     if (!isProcessed) {
-      throw new Error("Image processing timed out")
+      throw new Error("Tempo limite excedido ao processar a imagem")
     }
     console.log(removeUrl)
     return { success: removeUrl }

@@ -74,7 +74,7 @@ export default function SmartCrop() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="py-8">
           <span className="flex gap-1 items-center  flex-col text-xs font-medium">
-            Smart Crop
+            Corte Inteligente
             <Crop size={18} />
           </span>
         </Button>
@@ -83,10 +83,10 @@ export default function SmartCrop() {
         <div className="flex flex-col h-full">
           <div className="space-y-2 pb-4">
             <h3 className="font-medium text-center py-2 leading-none">
-              Smart Recrop
+              Recorte Inteligente
             </h3>
           </div>
-          <h4 className="text-md font-medium pb-2">Format</h4>
+          <h4 className="text-md font-medium pb-2">Formato</h4>
           <div className={"flex gap-4 items-center justify-center pb-2"}>
             <Card
               className={cn(
@@ -130,7 +130,7 @@ export default function SmartCrop() {
               onClick={() => setAspectRatio("1:1")}
             >
               <CardHeader className="p-0 text-center">
-                <CardTitle className="text-md">Square</CardTitle>
+                <CardTitle className="text-md">Quadrado</CardTitle>
                 <CardDescription>
                   <p className="text-sm font-bold">1:1</p>
                 </CardDescription>
@@ -147,7 +147,7 @@ export default function SmartCrop() {
             variant={"outline"}
             disabled={!activeLayer.url || generating}
           >
-            {generating ? "Cropping..." : "Smart Crop 🎨"}
+            {generating ? "Cortando..." : "Corte Inteligente 🎨"}
           </Button>
         </div>
       </PopoverContent>

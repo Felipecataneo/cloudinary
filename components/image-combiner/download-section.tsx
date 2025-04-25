@@ -38,7 +38,7 @@ export function DownloadSection({
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle className="text-xs sm:text-sm font-semibold">Aviso Vídeo</AlertTitle>
             <AlertDescription className="text-xs sm:text-sm">
-              Pré-visualização de vídeo mostra apenas o 1º quadro. O download final está disponível apenas para combinação de <strong>imagens</strong>.
+              Os vídeos são automaticamente convertidos para o formato GIF. A qualidade pode ser reduzida.
             </AlertDescription>
           </Alert>
         )}

@@ -34,24 +34,25 @@ export default function GenRemove() {
       <PopoverTrigger disabled={!activeLayer?.url} asChild>
         <Button variant="outline" className="p-8">
           <span className="flex gap-1 items-center justify-center flex-col text-xs font-medium">
-            Content Aware <Eraser size={20} />
+            Remoção Inteligente
+            <Eraser size={20} />
           </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">Smart AI Remove</h4>
+            <h4 className="font-medium leading-none">Remoção Inteligente com IA</h4>
             <p className="text-sm text-muted-foreground">
-              Generative Remove any part of the image
+              Remova qualquer parte da imagem de forma generativa
             </p>
           </div>
           <div className="grid gap-2">
-            <h3 className="text-xs">Suggested selections</h3>
+            <h3 className="text-xs">Seleções sugeridas</h3>
             <div className="flex gap-2">
               {tags.length === 0 && (
                 <p className="text-xs text-muted-foreground">
-                  No tags available
+                  Nenhuma tag disponível
                 </p>
               )}
               {tags.map((tag) => (
@@ -68,7 +69,7 @@ export default function GenRemove() {
               ))}
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="width">Selection</Label>
+              <Label htmlFor="width">Seleção</Label>
               <Input
                 className="col-span-2 h-8"
                 value={activeTag}
@@ -109,7 +110,7 @@ export default function GenRemove() {
             }
           }}
         >
-          Magic Remove 🎨
+          {generating ? "Removendo..." : "Remover com IA 🎨"}
         </Button>
       </PopoverContent>
     </Popover>
