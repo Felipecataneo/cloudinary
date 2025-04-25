@@ -1,3 +1,4 @@
+// lib/layer-store.tsx
 import { createStore } from "zustand/vanilla"
 import { StoreApi, useStore } from "zustand"
 import React from "react"
@@ -46,11 +47,14 @@ type State = {
   updateLayer: (layer: Layer) => void
   setPoster: (id: string, posterUrl: string) => void
   setTranscription: (id: string, transcriptionURL: string) => void
-  layerComparisonMode: boolean
+  layerComparisonMode: boolean // Existing mode
   setLayerComparisonMode: (mode: boolean) => void
   comparedLayers: string[]
   setComparedLayers: (layers: string[]) => void
   toggleComparedLayer: (id: string) => void
+  // NEW: Combiner Mode
+  combinerMode: boolean
+  setCombinerMode: (mode: boolean) => void
 }
 
 const getStore = (initialState: {
@@ -95,24 +99,27 @@ const getStore = (initialState: {
         setLayerComparisonMode: (mode: boolean) =>
           set(() => ({
             layerComparisonMode: mode,
-            comparedLayers: mode ? [] : [],
+            comparedLayers: mode ? [] : [], // Clear compared layers when exiting comparison mode
           })),
         comparedLayers: [],
         setComparedLayers: (layers: string[]) =>
           set(() => ({
             comparedLayers: layers,
-            layerComparisonMode: layers.length > 0,
+            layerComparisonMode: layers.length > 0, // Enter comparison mode if layers are selected
           })),
         toggleComparedLayer: (id: string) =>
           set((state) => {
             const newComparedLayers = state.comparedLayers.includes(id)
               ? state.comparedLayers.filter((layerId) => layerId !== id)
-              : [...state.comparedLayers, id].slice(-2)
+              : [...state.comparedLayers, id].slice(-2); // Keep only the last two
             return {
               comparedLayers: newComparedLayers,
               layerComparisonMode: newComparedLayers.length > 0,
-            }
+            };
           }),
+        // NEW: Combiner Mode state and setter
+        combinerMode: false,
+        setCombinerMode: (mode: boolean) => set({ combinerMode: mode }),
       }),
       { name: "layer-storage" }
     )
