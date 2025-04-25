@@ -54,7 +54,12 @@ const getStore = (initialState: {
       }),
       {
         name: "image-storage",
-        storage: createJSONStorage(() => localStorage),
+        // FIX: Conditionally use localStorage only if window is defined
+        storage: createJSONStorage(() => (typeof window !== 'undefined' ? localStorage : {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        })),
       }
     )
   )
