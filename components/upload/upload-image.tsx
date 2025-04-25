@@ -55,7 +55,9 @@ export default function UploadImage() {
             name: res.data.success.original_filename,
             publicId: res.data.success.public_id,
             format: res.data.success.format,
-            resourceType: res.data.success.resource_type,
+            resourceType: res.data.success.resource_type === "image" || res.data.success.resource_type === "video"
+              ? res.data.success.resource_type
+              : null,
           })
           setTags(res.data.success.tags)
 
